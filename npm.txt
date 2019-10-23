@@ -1,0 +1,1 @@
+npm install gulp gulp-sass gulp-sass-glob gulp-sourcemaps gulp-plumber gulp-notify browser-sync gulp-postcss autoprefixer -D

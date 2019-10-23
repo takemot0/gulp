@@ -4,33 +4,41 @@ var sassGlob = require('gulp-sass-glob'); //@importの記述を簡潔にする
 var sourcemaps = require('gulp-sourcemaps');
 var plumber = require('gulp-plumber'); //エラー時の強制終了を防止
 var notify = require('gulp-notify'); //エラー発生時にデスクトップ通知する
-
-var browserSync = require('browser-sync'); //ブラウザ反映
 //var ssi = require('browsersync-ssi');
 var postcss = require('gulp-postcss'); //autoprefixerとセット
 var autoprefixer = require('autoprefixer'); //ベンダープレフィックス付与
+var browserSync = require('browser-sync'); //ブラウザ反映
 //var cssdeclsort = require('css-declaration-sorter'); //css並べ替え
 //var imagemin = require('gulp-imagemin');
 //var ejs = require("gulp-ejs");
 //var rename = require("gulp-rename"); //.ejsの拡張子を変更
 
 //scssのコンパイル
-//gulp.task('sass', function () {
-//	gulp.src('./scss/ganban.scss')
-//		.pipe(sourcemaps.init())
-//		.pipe(sass({
-//			outputStyle: 'expanded'
-//		}).on('error', sass.logError))
-//		.pipe(sourcemaps.write('./map/'))
-//		.pipe(sourcemaps.init({
-//			loadMaps: true
-//		}))
-//		//.pipe(autoprefixer({
-//		//	cascade: false
-//		//	}))
-//		.pipe(sourcemaps.write())
-//		.pipe(gulp.dest('./css/'))
-//});
+gulp.task('sass', function () {
+	return gulp.src('./scss/*.scss')
+		.pipe(sourcemaps.init({
+			loadMaps: true
+		}))
+		.pipe(plumber({
+			errorHandler: notify.onError("Error: <%= error.message %>")
+		})) //エラーチェック
+		.pipe(sassGlob()) //importの読み込みを簡潔にする
+		.pipe(sass({
+			outputStyle: 'expanded' //expanded, nested, campact, compressedから選択
+		}))
+		.pipe(sourcemaps.write('map'))
+
+		//.pipe(postcss([cssdeclsort({
+		//	order: 'alphabetically'
+		//})])) //プロパティをソートし直す(アルファベット順)
+		//.pipe(postcss([autoprefixer({
+		//		// ☆IEは11以上、Androidは4.4以上
+		//		// その他は最新2バージョンで必要なベンダープレフィックスを付与する
+		//		browsers: ["last 2 versions", "ie >= 11", "Android >= 4"],
+		//		cascade: false
+		//	})]))
+		.pipe(gulp.dest('./css/'))
+});
 
 //保存時のリロード
 gulp.task('browser-sync', function () {
