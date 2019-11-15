@@ -11,8 +11,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^9.6.5",
+    "autoprefixer": "^9.7.1",
     "browser-sync": "^2.26.7",
+    "css-declaration-sorter": "^4.0.1",
     "gulp": "^4.0.2",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.1",
@@ -20,5 +21,10 @@
     "gulp-sass": "^4.0.2",
     "gulp-sass-glob": "^1.1.0",
     "gulp-sourcemaps": "^2.6.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "X:\\\\web\\\\スタンドアローン\\\\webfile"
+  },
+  "browserslist": ["last 2 versions", "ie >= 11", "Android >= 4"]
 }

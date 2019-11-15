@@ -15,7 +15,8 @@ var browserSync = require('browser-sync'); //ブラウザ反映
 
 //scssのコンパイル
 gulp.task('sass', function () {
-	return gulp.src('./scss/*.scss')
+	//return gulp.src('./assets/scss/*.scss')
+	return gulp.src('./assets/scss/*.scss')
 		.pipe(sourcemaps.init({
 			loadMaps: true
 		}))
@@ -26,18 +27,20 @@ gulp.task('sass', function () {
 		.pipe(sass({
 			outputStyle: 'expanded' //expanded, nested, campact, compressedから選択
 		}))
-		.pipe(sourcemaps.write('map'))
+
 
 		//.pipe(postcss([cssdeclsort({
 		//	order: 'alphabetically'
 		//})])) //プロパティをソートし直す(アルファベット順)
-		//.pipe(postcss([autoprefixer({
-		//		// ☆IEは11以上、Androidは4.4以上
-		//		// その他は最新2バージョンで必要なベンダープレフィックスを付与する
+		.pipe(postcss([autoprefixer({
+				// ☆IEは11以上、Androidは4.4以上
+				// その他は最新2バージョンで必要なベンダープレフィックスを付与する
 		//		browsers: ["last 2 versions", "ie >= 11", "Android >= 4"],
-		//		cascade: false
-		//	})]))
-		.pipe(gulp.dest('./css/'))
+				cascade: false,
+				grid:true
+			})]))
+		.pipe(sourcemaps.write('../mapfiles'))
+		.pipe(gulp.dest('./assets/css/'))
 });
 
 //保存時のリロード
@@ -55,9 +58,9 @@ gulp.task('bs-reload', function (done) {
 
 // 監視
 gulp.task('watch', function (done) {
-	gulp.watch('./scss/*.scss', gulp.task('sass')); //sassが更新されたらgulp sassを実行
-	gulp.watch('./css/*.css', gulp.task('bs-reload')); //sassが更新されたらbs-reloadを実行
-	gulp.watch('./js/*.js', gulp.task('bs-reload')); //jsが更新されたらbs-relaodを実行
+	gulp.watch('./assets/scss/*.scss', gulp.task('sass')); //sassが更新されたらgulp sassを実行
+	gulp.watch('./assets/css/*.css', gulp.task('bs-reload')); //sassが更新されたらbs-reloadを実行
+	gulp.watch('./assets/js/*.js', gulp.task('bs-reload')); //jsが更新されたらbs-relaodを実行
 	gulp.watch('./**/*.html', gulp.task('bs-reload'));
 });
 
