@@ -8,14 +8,13 @@ var notify = require('gulp-notify'); //エラー発生時にデスクトップ�
 var postcss = require('gulp-postcss'); //autoprefixerとセット
 var autoprefixer = require('autoprefixer'); //ベンダープレフィックス付与
 var browserSync = require('browser-sync'); //ブラウザ反映
-//var cssdeclsort = require('css-declaration-sorter'); //css並べ替え
+var cssdeclsort = require('css-declaration-sorter'); //css並べ替え
 //var imagemin = require('gulp-imagemin');
 //var ejs = require("gulp-ejs");
 //var rename = require("gulp-rename"); //.ejsの拡張子を変更
 
 //scssのコンパイル
 gulp.task('sass', function () {
-	//return gulp.src('./assets/scss/*.scss')
 	return gulp.src('./assets/scss/*.scss')
 		.pipe(sourcemaps.init({
 			loadMaps: true
@@ -27,15 +26,11 @@ gulp.task('sass', function () {
 		.pipe(sass({
 			outputStyle: 'expanded' //expanded, nested, campact, compressedから選択
 		}))
-
-
-		//.pipe(postcss([cssdeclsort({
-		//	order: 'alphabetically'
-		//})])) //プロパティをソートし直す(アルファベット順)
+		.pipe(postcss([cssdeclsort({
+			order: 'smacss'
+		})])) //プロパティをソートし直す(SMACSS)
 		.pipe(postcss([autoprefixer({
-				// ☆IEは11以上、Androidは4.4以上
-				// その他は最新2バージョンで必要なベンダープレフィックスを付与する
-		//		browsers: ["last 2 versions", "ie >= 11", "Android >= 4"],
+//				browsers: ["last 2 versions", "ie >= 11", "Android >= 4"],
 				cascade: false,
 				grid:true
 			})]))
@@ -46,7 +41,6 @@ gulp.task('sass', function () {
 //保存時のリロード
 gulp.task('browser-sync', function () {
 	browserSync.init({
-		//変更
 		proxy: "127.0.0.1:80/"
 	});
 });
